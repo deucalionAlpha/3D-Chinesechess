@@ -1,0 +1,81 @@
+#version 330 core
+#define MAX_GERSTNER_WAVE_COUNT 128
+
+layout (location = 0) in vec3 aPos;
+
+out VS_OUT
+{
+     vec3 FragPos;
+     vec3 Normal;
+     vec2 TexCoords;
+}vs_out;
+
+uniform mat4 view;
+uniform mat4 projection;
+
+
+struct GerstnerWave {
+	float Steepness;
+	float Amplitude;
+	float Frequency;
+	float Speed;
+	vec2 Direction;
+};
+
+uniform GerstnerWave gGerstnerWave[MAX_GERSTNER_WAVE_COUNT];
+uniform int gGerstnerWaveCount;
+uniform float gTime;
+uniform bool instanced;
+uniform	float D;
+uniform int maxI;
+
+void GerstnerLevelOne(vec3 vertex, out vec3 offset, out vec3 normal)
+{
+	offset = vec3(0, 0, 0);
+	normal = vec3(0, 1, 0);
+	for(int i = 0; i < gGerstnerWaveCount; i++)
+	{
+		float dp = dot(vertex.xz, gGerstnerWave[i].Direction.xy); 
+		float p = gGerstnerWave[i].Frequency * dp - gGerstnerWave[i].Speed * gTime;
+		float Acos = gGerstnerWave[i].Amplitude * cos(p);
+		float Asin = gGerstnerWave[i].Amplitude * sin(p);
+		
+		offset.x -= 
+		gGerstnerWave[i].Steepness/
+		(gGerstnerWaveCount*gGerstnerWave[i].Amplitude
+		*gGerstnerWave[i].Frequency) 
+		*gGerstnerWave[i].Direction.x * Asin;
+		
+		offset.z -= 
+		gGerstnerWave[i].Steepness/
+		(gGerstnerWaveCount*gGerstnerWave[i].Amplitude
+		*gGerstnerWave[i].Frequency) 
+		*gGerstnerWave[i].Direction.y * Asin;
+		
+		offset.y += Acos;
+		
+		normal.x += gGerstnerWave[i].Frequency *
+			gGerstnerWave[i].Direction.x * Asin;
+		normal.z += gGerstnerWave[i].Frequency * 
+			gGerstnerWave[i].Direction.y * Asin;
+			
+		normal.y += gGerstnerWave[i].Steepness * Acos/
+		(gGerstnerWave[i].Amplitude*gGerstnerWaveCount);
+	}
+	normal = normalize(normal);
+}
+
+void main()
+{
+	vec3 tempPos=aPos;
+	if(instanced==true)
+	{
+		tempPos.x+=(gl_InstanceID%maxI)*D;
+		tempPos.z-=(gl_InstanceID/maxI)*D;
+	}
+	vec3 offset;
+	GerstnerLevelOne(tempPos,offset,vs_out.Normal);
+	vs_out.Normal.y=-vs_out.Normal.y;
+    vs_out.FragPos =tempPos+offset;
+    gl_Position = projection * view * vec4(vs_out.FragPos, 1.0);
+}

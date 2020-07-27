@@ -1,0 +1,37 @@
+#version 330 core
+out vec4 FragColor;
+
+struct Material {
+    sampler2D texture_diffuse0;
+    sampler2D texture_specular0; 
+    bool texture_diffuse0_exist;
+    bool texture_specular0_exist; 
+    vec4 texture_diffuse_color;
+    vec4 texture_specular_color;
+    float shininess;
+    bool mirror;
+    bool transparent;
+}; 
+uniform Material material;
+
+in VS_OUT
+{
+     vec3 FragPos;
+     vec3 Normal;
+     vec2 TexCoords;
+}gs_out;
+
+
+void main()
+{
+    vec3 ambient;
+    if(material.texture_diffuse0_exist)ambient = 1.0 * texture(material.texture_diffuse0, gs_out.TexCoords).rgb;
+    else ambient = 1.0* material.texture_diffuse_color.rgb;
+    
+
+    vec3 result = ambient;
+	
+    FragColor = vec4(result, material.texture_diffuse_color.a);
+}
+
+

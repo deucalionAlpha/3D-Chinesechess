@@ -1,0 +1,94 @@
+#version 330 core
+out vec4 FragColor;
+
+struct Material {
+    sampler2D texture_diffuse0;
+    sampler2D texture_specular0; 
+    bool texture_diffuse0_exist;
+    bool texture_specular0_exist; 
+    vec4 texture_diffuse_color;
+    vec4 texture_specular_color;
+    float shininess;
+    bool mirror;
+    bool transparent;
+}; 
+
+struct Light {
+    vec3 position;
+    vec3 direction;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    bool pointlight;
+};
+
+in VS_OUT
+{
+     vec3 FragPos;
+     vec3 Normal;
+     vec2 TexCoords;
+}gs_out;
+  
+uniform vec3 viewPos;
+
+uniform Material material;
+uniform Light light;
+
+uniform samplerCube skybox;
+
+void main()
+{
+
+if(material.mirror)
+{
+    vec3 I = normalize(gs_out.FragPos - viewPos);
+    vec3 R = reflect(I, normalize(gs_out.Normal));
+    R=normalize(R);    
+	vec4 tempColor;
+    tempColor = texture(skybox,R);
+    FragColor = vec4(tempColor.r*0.5+0.3,tempColor.g*0.5+0.1,tempColor.b*0.5+0.2,1.0);
+	//FragColor=vec4(1.0,0.0,0.0,1.0);
+    //FragColor =vec4(R,1.0);
+}
+else if(material.transparent)
+{
+    float ratio = 1.00 / 1.52;
+    vec3 I = normalize(gs_out.FragPos - viewPos);
+    vec3 R = refract(I, normalize(gs_out.Normal), ratio);
+	vec3 tempColor;
+    tempColor = texture(skybox, R).rgb;
+	FragColor = vec4(tempColor.rgb,1.0)*0.7+material.texture_diffuse_color*0.3;
+}
+else
+{
+    // ambient
+    vec3 ambient;
+    if(material.texture_diffuse0_exist)ambient = light.ambient * texture(material.texture_diffuse0, gs_out.TexCoords).rgb;
+    else ambient = light.ambient * material.texture_diffuse_color.rgb;
+    // diffuse 
+
+    vec3 norm = normalize(gs_out.Normal);
+    vec3 lightDir;
+    
+    if(light.pointlight)lightDir = normalize(light.position - gs_out.FragPos);
+    else lightDir = normalize(light.direction);
+
+    float diff = max(dot(norm, lightDir), 0.0);
+
+    vec3 diffuse;
+    if(material.texture_diffuse0_exist)diffuse = light.diffuse * diff * texture(material.texture_diffuse0, gs_out.TexCoords).rgb;  
+    else diffuse = light.diffuse * diff * material.texture_diffuse_color.rgb;
+
+    // specular
+    vec3 viewDir = normalize(viewPos - gs_out.FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm);  
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 specular;
+    if(material.texture_specular0_exist)specular=light.specular * spec * texture(material.texture_specular0,gs_out.TexCoords).rgb;  
+    else specular = light.specular * spec * vec3(0.1,0.1,0.1);
+
+    vec3 result = ambient + diffuse + specular;
+    FragColor = vec4(result, material.texture_diffuse_color.a);
+}
+
+} 

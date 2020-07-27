@@ -1,0 +1,16 @@
+﻿  加载模型.cpp
+e:\study\图形学2018\final\chinese chess\chinese chess\include\camera.h(49): warning C4305: “=”: 从“double”到“float”截断
+e:\study\图形学2018\final\chinese chess\chinese chess\include\camera.h(198): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+e:\study\图形学2018\final\chinese chess\chinese chess\include\camera.h(199): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+e:\study\图形学2018\final\chinese chess\chinese chess\include\camera.h(221): warning C4244: “-=”: 从“double”转换到“float”，可能丢失数据
+e:\study\图形学2018\final\chinese chess\chinese chess\include\camera.h(261): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+e:\study\图形学2018\final\chinese chess\chinese chess\include\camera.h(328): warning C4305: “初始化”: 从“double”到“float”截断
+e:\study\图形学2018\final\chinese chess\chinese chess\include\mesh.h(88): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+e:\study\图形学2018\final\chinese chess\chinese chess\include\text.h(89): warning C4838: 从“FT_Pos”转换到“GLuint”需要收缩转换
+e:\study\图形学2018\final\chinese chess\chinese chess\nurbscar.h(270): warning C4305: “初始化”: 从“double”到“float”截断
+e:\study\图形学2018\final\chinese chess\chinese chess\nurbscar.h(277): warning C4305: “初始化”: 从“double”到“float”截断
+e:\study\图形学2018\final\chinese chess\chinese chess\nurbscar.h(304): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+e:\study\图形学2018\final\chinese chess\chinese chess\nurbscar.h(305): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+e:\study\图形学2018\final\chinese chess\chinese chess\nurbscar.h(306): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+e:\study\图形学2018\final\chinese chess\chinese chess\chessgo.h(276): warning C4715: “chessGo::checkRule”: 不是所有的控件路径都返回值
+  Chinese Chess.vcxproj -> E:\study\图形学2018\Final\Chinese Chess\Debug\Chinese Chess.exe

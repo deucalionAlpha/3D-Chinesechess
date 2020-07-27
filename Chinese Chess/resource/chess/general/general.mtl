@@ -1,0 +1,49 @@
+# Blender3D MTL File: 
+# Material Count: 4
+newmtl f089_d_trbtex003.dds
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd trbtex003.dds
+map_Kn trbtex010.dds
+
+
+newmtl f089_a_trbtex000.dds
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd trbtex000.dds
+map_Kn trbtex008.dds
+
+
+newmtl f089_a_trbtex002.dds
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd trbtex002.dds
+
+
+newmtl f089_b_trbtex001.dds
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd trbtex001.dds
+map_Kn trbtex009.dds
+
+
